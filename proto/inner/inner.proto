@@ -1,0 +1,64 @@
+// *********************************************************************************************************************
+// ***                                        CONFIDENTIAL --- CUSTOM STUDIOS                                        ***
+// *********************************************************************************************************************
+// * Auth: ColeCai                                                                                                     *
+// * Date: 2024/03/10 22:39:09                                                                                         *
+// * Proj: fingertge                                                                                                   *
+// * Pack: inner                                                                                                       *
+// * File: inner.proto                                                                                                 *
+// *-------------------------------------------------------------------------------------------------------------------*
+// * Overviews:                                                                                                        *
+// *-------------------------------------------------------------------------------------------------------------------*
+// * Functions:                                                                                                        *
+// * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *
+
+syntax = "proto3";
+package inner;
+option go_package = "../../pb/inner;inner";
+
+enum ServiceType {
+  SERVICE_NONE    = 0;
+  SERVICE_CLIENT  = 1;
+  SERVICE_ACCESS  = 11;
+  SERVCIE_BANK    = 12;
+  SERVCIE_USER    = 13;
+  SERVCIE_WEBGATE = 14;
+}
+
+message InnerMsg {
+  ServiceType src_type = 1;
+  uint32 src_svid      = 2;
+  string msg_name      = 3;
+  bytes msg_body       = 4;
+}
+
+message WebGateMsg {
+  ServiceType service_type = 1;
+  uint64 mode              = 2;
+  uint32 svid              = 3;
+  string req_name          = 4;
+  bytes req_body           = 5;
+  string rsp_name          = 6;
+  bytes rsp_body           = 7;
+}
+
+message GetUserInfoReq {
+  uint64 uid = 1;
+}
+
+message GetUserInfoRsp {
+  string name = 2;
+}
+
+message GetUserCoinReq {
+  uint64 uid = 1;
+}
+
+message GetUserCoinRsp {
+  uint64 coint = 2;
+}
+
+service UserService {
+  rpc Search(GetUserInfoReq) returns (GetUserInfoRsp);
+  rpc SearchCoing(GetUserCoinReq) returns (GetUserCoinRsp);
+}
